@@ -1,14 +1,15 @@
 const mysql = require('mysql')
 //настройки mysql базы данных
+const config = require('./../settings')
 
 const connection = mysql.createConnection( // connection или create  connection
     {
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'rest',
-        port: 5555,
-        socketPath: 'путь к сокету'
+        host: config.HOST,
+        user: config.USER,
+        password: config.PASSWORD,
+        database: config.DATABASE,
+        port: config.PORT,
+        socketPath: config.SOCKET,
     }
 )
 

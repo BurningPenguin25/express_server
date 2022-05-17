@@ -2,9 +2,14 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 2525
 const bodyparser = require('body-parser')
+const passport = require('passport')
+
 
 app.use(bodyparser.urlencoded({extended:true})) //??
 app.use(bodyparser.json()) // ??
+app.use(passport.initialize())
+
+require('./middlware/passport')(passport)
 
 
 const routes = require('././settings/routes') // файл с путями которые указаны для передачи или получения их

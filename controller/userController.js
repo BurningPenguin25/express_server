@@ -2,28 +2,54 @@
 
 const response = require('./../response')
 const db = require('./../settings/db')
+const bcrypt = require('bcryptjs')
 
 // получение данных с БД
-exports.users = (req, res) =>{
-    db.query(' SELECT * FROM `users`', (error, rows, fields) =>{ // получение данных с сервера
+exports.getAllUsers = (req, res) =>{
+    db.query(' SELECT `column1`, `column2`, `column3`, `column4`  FROM `DBName`', (error, rows, fields) =>{ // получение указанных данных  из БД users
         if(error){
-            console.log(error)
+  response.status(404, error, res)
         } else {
-            response.status(rows, fields)
+            response.status(200, rows, res)
         }
 
     })
 }
 
 // отправка значений в БД
-exports.add = (req, res) =>{
+exports.signup = (req, res) =>{
 
-    const sql = "INSERT INTO `db_name` (`string-1`, `string-2`, `string-3`)  VALUES('" + req.query.string-1 +"', '" + req.query.string-2 + "', '" + req.query.string-3 + "') // отправка полей данных в базу данных на сервер(название таблицы, названия полей)
-        db.query(sql, (error, results) => {
-if(error){
-    console.log(error)
-} else {
-    response.status(results,res)
-            }
-        })
+    // проверка пользователя на регистрацию: регистрировался до этого или нет /  есть в БД или нет
+    db.query("SELECT `column1`, `column2`, `column3` `column4` FROM `DBName` WHERE `email` = '" + req.body.email +  "'", (error, rows, fields) =>{
+        if(error){
+         response.status(400, error, res)
+        } else if(typeof rows !== 'undefined' && rows.length > 0){ //  проверка пользователя на наличие
+         console.log(rows)
+            const row = JSON.parse(JSON.stringify(rows))
+            row.map(elem => { // перебор данных email/name на поиск по совпадению
+                response.status(302, {message: ' пользователь с таким именем/email уже зарегистрирован'}, res)
+                return true
+            })
+        } else {
+            const column1 = req.body.column1 //  вместо column1 может быть name/id/email/password   или что то другое
+            const column2 = req.body.column2
+            const column3 = req.body.column3
+
+            const salt = bcrypt.hashSync(7)
+            const column4 = bcrypt.hashSync(req.body.column4, salt)
+
+         response.status(202, 'Пользователь зарегистрирован', res )
+
+            const sql = "INSERT INTO `DBName` (`column1`, `column2`, `column3`, `column3`)  VALUES( '" + column1 +"', '" + column2 + "', '" + column3 + "', '" + column4 + "')" // отправка полей данных в базу данных на сервер(название таблицы, названия полей)
+            db.query(sql, (error, results) => {
+            if(error){
+                  response.status(400, error, res )
+            } else {
+                response.status(200, {message: 'Регистрация прошла успешно', results},res)
+                        }
+            })
+        }
+    })
+
+
 }
