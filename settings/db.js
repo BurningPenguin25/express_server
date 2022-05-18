@@ -1,8 +1,8 @@
-const mysql = require('mysql')
 //настройки mysql базы данных
-const config = require('./../settings')
+const mysql = require('mysql')
+const config = require('./../configuration')
 
-const connection = mysql.createConnection( // connection или create  connection
+const connection = mysql.createConnection(
     {
         host: config.HOST,
         user: config.USER,
@@ -13,11 +13,12 @@ const connection = mysql.createConnection( // connection или create  connecti
     }
 )
 
+
 connection.connect((error)=>{
     if(error){
         console.log('Ошибка подключения к базе данных')
     } else {
-        console.log('Подключилось')
+        console.log('Подключено успешно ')
     }
 })
 
@@ -25,5 +26,5 @@ module.exports = connection
 
 
 //  создать базу данных / создать таблицу со значениями через консоль
-
-// найти  socketPath
+// найти  socketPath (/tmp/mysql.sock) ???
+// /Applications/MAMP/tmp/mysql/mysql.sock. ххх
