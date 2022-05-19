@@ -13,3 +13,15 @@ exports.get = (req, res) =>{
         }
     })
 }
+
+exports.add = (req, res) => {
+   const sql = " INSERT INTO `dbtable`(`name`, `mail`) VALUES('"+ req.query.name +"', '" + req.query.mail + "')";
+db.query(sql, (error, results)=> {
+    if (error) {
+        console.log('ошибка', error)
+    } else {
+response.status(results, res)
+    }
+})
+    console.log(req.query);
+}
