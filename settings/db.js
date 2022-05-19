@@ -1,13 +1,13 @@
 
-
 const mysql = require('mysql')
+const cnfg = require('./../settings/configuration')
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    port: 3306, //  стандартный порт | заменить?
-    user: 'root',
-    password: 'BurningPenguin25b',
-    database: 'dbtest', // название  самой базы данных
+    host: cnfg.HOST,
+    port: cnfg.PORT, //  стандартный порт | заменить?
+    user: cnfg.USER,
+    password: cnfg.PASSWORD,
+    database: cnfg.BASENAME, // название  самой базы данных
 })
 
 connection.connect((error)=>{
