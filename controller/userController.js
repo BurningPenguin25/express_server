@@ -15,13 +15,12 @@ exports.get = (req, res) =>{
 }
 
 exports.add = (req, res) => {
-    db.query(" SELECT `name`, `mail` FROM `dbtable` WHERE `mail` = '"+ req.query.mail +"'", (error, rows, fields) =>{
+    db.query(" SELECT `name`, `mail` FROM `dbtable` WHERE `mail` = '"+ req.body.mail +"'", (error, rows, fields) =>{
         if(error){
             response.status(400, error, res)
         } else if(typeof rows !== "undefined" && rows.length >0){
             const row = JSON.parse(JSON.stringify(rows))
             row.map(rws => {
-                console.log(rws)
                 response.status(302, {message: 'Пользователь с таким email уже зарегистрирвоан' }, res)
                 return true
             })
@@ -41,6 +40,30 @@ exports.add = (req, res) => {
                 } else {
                     response.status(200, {message: 'регистрация прошла успешна', results}, res)
                 }
+            })
+        }
+    })
+}
+
+
+
+exports.signin = (req, res) =>{
+    db.query(" SELECT `name`, `mail` FROM `dbtable` WHERE `mail` = '"+ req.body.mail +"'", (error, rows, fields) =>{
+        if (error) {
+            response.status(400, error, res)
+        }else if(rows.length <= 0 ){
+
+            response.status(401, 'Пользователь  не найден', res)
+        } else {
+            const rws = JSON.parse(JSON.stringify(rows))
+            rws.map(rws => {
+            const password = bcrypt.compare(req.body.password, rws.password) // установить значение пароль  в базу данных
+                if(password){
+                    response.status(200,  {message: 'Пароль верный'}, res)
+                } else{
+                    response.status(401,  {message: 'Пароль введен енкорректно!'}, res)
+                }
+                return true
             })
         }
     })
