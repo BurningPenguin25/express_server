@@ -1,5 +1,7 @@
 const response = require('./../response')
 const db = require('./../settings/db')
+const jwt = require('jsonwebtoken')
+const cnfg = require('./../settings/configuration')
 // const bcrypt = require('bcryptjs')
 
 //dbtable - название таблицы
@@ -59,7 +61,11 @@ exports.signin = (req, res) =>{
             rws.map(rws => {
             const password = bcrypt.compare(req.body.password, rws.password) // установить значение пароль  в базу данных
                 if(password){
-                    response.status(200,  {message: 'Пароль верный'}, res)
+                    const token = jwt.sign({
+                        name: rws.name,
+                        mail: rws.mail
+                    }, cnfg.JWT , {timeLive: 120 * 120})
+                    response.status(200,  {token: token}, res)
                 } else{
                     response.status(401,  {message: 'Пароль введен енкорректно!'}, res)
                 }
@@ -68,3 +74,8 @@ exports.signin = (req, res) =>{
         }
     })
 }
+
+
+// добавить значение id firstname secondname mail password
+// создать новую базу данных
+//обновить таблицу в БД и добавить: id firstname secondname mail password

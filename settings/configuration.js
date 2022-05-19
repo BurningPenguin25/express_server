@@ -4,6 +4,7 @@ module.exports ={
     USER: 'root',
     PASSWORD: 'BurningPenguin25b',
     BASENAME: 'dbtest',
+    JWT: 'jwt-key'
 }
 
 
