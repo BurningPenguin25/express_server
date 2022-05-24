@@ -14,7 +14,7 @@ module.exports = passport => {
             try{
                 db.query("SELECT `id`, `email`, FROM `basetable` WHERE `id` = '" + payload.id + "' ", (error, rows, fields) => {
                     if(error){
-
+console.log(error)
                     }else{
                         const user = rows
                         if(user){
