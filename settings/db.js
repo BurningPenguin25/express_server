@@ -1,6 +1,5 @@
 // подключение и настройки базы данных mysql
 
-
 const mysql = require('mysql') // подключение СУБД mysql
 const cnfg = require('./../settings/configuration') // подключение настроек
 
