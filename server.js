@@ -1,23 +1,30 @@
-// настройки подключение и запуск сервера
-
-const express = require('express') // подключение express  фреймворка для node
+const express = require('express')
 const app = express()
-const port = 3501
-const bodyParser = require('body-parser') // подключаем bodyparser  для чтения данных HTTP POST мы должны использовать модуль узла «body-parser». body-parser - это часть промежуточного программного обеспечения Express, которое читает входные данные формы и сохраняет их как объект javascript, доступный через req.body
-const passport = require('passport')  // подключение passport для аутентификации по jwt
+const port = process.env.PORT || 3500
+const bodyparser = require('body-parser')
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-app.use(passport.initialize())
-require('./middleware/passport')(passport)
 
-// app.get('/', (req, res)=>{
-//     res.send('Hello on server')
-// })
+app.get('/', (req,res) =>{
+    res.send("hello world")
+})
 
-const routes = require('./settings/routes') // установка путей для сервера
+app.use(bodyparser.urlencoded({extended:true})) //??
+app.use(bodyparser.json()) // ??
+
+const routes = require('././settings/routes') // файл с путями которые указаны для передачи или получения их
 routes(app)
 
-app.listen(port, ()=>{  // ответ после подключения сервера
-    console.log('Сервер запущен... ')
+app.listen(port, ()=>{ // номер порта где работает сервер
+    console.log(`Server started on port ${port}`)
 })
+
+
+
+// bodyparser -
+
+//post get  запросы: post -  отправка на сервер / get получение с сервера
+
+// socketPath найти для подключения к БД
+
+//  /tmp/mysql.sock
+// socket                                                       /tmp/mysql.sock

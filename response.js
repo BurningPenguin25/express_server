@@ -1,7 +1,6 @@
+exports.status = (status, values, res)=> {
 
-
-exports.status = (status, values, res) =>{
-    const data ={
+    const data = {
         "status": status,
         "values": values,
     }
