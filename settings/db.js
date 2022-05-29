@@ -1,22 +1,30 @@
-// подключение и настройки базы данных mysql
+//настройки mysql базы данных
+const mysql = require('mysql')
+const config = require('./../configuration')
 
+const connection = mysql.createConnection(
+    {
+        host: config.HOST,
+        user: config.USER,
+        password: config.PASSWORD,
+        database: config.DATABASE,
+        port: config.PORT,
+        socketPath: config.SOCKET,
+    }
+)
 
-const mysql = require('mysql') // подключение СУБД mysql
-const cnfg = require('./../settings/configuration') // подключение настроек
-
-const connection = mysql.createConnection({ //настройка самой базы данных
-    host: cnfg.HOST,
-    port: cnfg.PORT, //  стандартный порт | заменить?
-    user: cnfg.USER,
-    password: cnfg.PASSWORD,
-    database: cnfg.BASENAME, // название  самой базы данных
-})
 
 connection.connect((error)=>{
     if(error){
-        return console.log('Ошибка подключения', error)
+        console.log('Ошибка подключения к базе данных')
     } else {
-        return console.log('Подключение к базе данных успешно')
+        console.log('Подключено успешно ')
     }
 })
+
 module.exports = connection
+
+
+//  создать базу данных / создать таблицу со значениями через консоль
+// найти  socketPath (/tmp/mysql.sock) ???
+// /Applications/MAMP/tmp/mysql/mysql.sock. ххх
